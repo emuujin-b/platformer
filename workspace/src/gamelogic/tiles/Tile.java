@@ -33,7 +33,9 @@ public class Tile{
 		if(hitbox != null) hitbox.draw(g);		
 	}
 	
-	
+	public void setImage(BufferedImage a){
+		image = a;
+	}
 	
 	//------------------------------------Getters
 	public boolean isSolid() {
