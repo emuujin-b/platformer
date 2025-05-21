@@ -209,19 +209,22 @@ public class Level {
 			map.addTile(col+1,row,g);
 			numSquaresToFill--;
 			placedThisRound.add(g);
+			placedThisRound.remove(0);
+			
 			///
 			for(int i=numSquaresToFill;i>0;i--){
 				Gas b = new Gas(col, row, tileSize, tileset.getImage("GasOne"), this, 0);
 				map.addTile(col,row,b);
 				placedThisRound.add(b);
+				
 			}
 			//312
 			//5x4
 			//867
 			placedThisRound.remove(0);
+			placedThisRound.get(0);
 			//consider spot placedthisround.get(0) and try to add gas all around it. add any new gas created to placedthisround
 			//remove the gas tile you just processed from placedThisRound
-
 		}
 	}
 
@@ -234,10 +237,10 @@ public class Level {
 		Tile[][] t =map.getTiles();
 		//in bounds
 		if (col < 0 || col >= t.length || row < 0 || row >= t[0].length) {
-        return;
+        	map.addTile(col,row,w);
 		}
 		if (t[col][row] instanceof Water || t[col][row].isSolid()) {
-        return;
+        map.addTile(col,row,w);
     	}
 		//go down
 		if (row + 1 < t[0].length && !t[col][row + 1].isSolid()) {
