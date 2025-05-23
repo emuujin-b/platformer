@@ -215,8 +215,7 @@ public class Level {
 			for(int i=numSquaresToFill;i>0;i--){
 				Gas b = new Gas(col, row, tileSize, tileset.getImage("GasOne"), this, 0);
 				map.addTile(col,row,b);
-				placedThisRound.add(b);
-				
+				placedThisRound.add(b);	
 			}
 			//312
 			//5x4
@@ -237,28 +236,27 @@ public class Level {
 		Tile[][] t =map.getTiles();
 		//in bounds
 		if (col < 0 || col >= t.length || row < 0 || row >= t[0].length) {
-        	map.addTile(col,row,w);
+        	return;
 		}
 		if (t[col][row] instanceof Water || t[col][row].isSolid()) {
-        map.addTile(col,row,w);
+			return;
     	}
 		//go down
 		if (row + 1 < t[0].length && !t[col][row + 1].isSolid()) {
-        	water(col, row + 1, map, fullness-1);
-			map.addTile(col, row, w);
-        	return;
-    	}
+        	water(col, row + 1, map, 0); 
+    		return;
+    }
     	//if we can’t go down go left and right.
 		//right
-		if(col+1 < map.getTiles().length && !(map.getTiles()[col+1][row] instanceof Water)) {
-			water(col+1, row, map, fullness-1);
-			map.addTile(col, row, w);
-		}
-		//left
-		if(col-1 >= 0 && !(map.getTiles()[col-1][row] instanceof Water)) {
-			water(col-1, row, map, fullness-1);
-			map.addTile(col, row, w);
-		}
+		if (row + 1 < t[0].length && t[col][row + 1].isSolid()) {
+        	int nextFullness = fullness-1;
+			if (col + 1 < t.length && !(t[col + 1][row] instanceof Water) && !t[col + 1][row].isSolid()) {
+            	water(col + 1, row, map, nextFullness);
+        	}
+        	if (col - 1 >= 0 && !(t[col - 1][row] instanceof Water) && !t[col - 1][row].isSolid()) {
+            	water(col - 1, row, map, nextFullness);
+        	}
+    	}
 	}
 
 	public void draw(Graphics g) {
