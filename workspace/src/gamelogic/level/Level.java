@@ -198,7 +198,10 @@ public class Level {
 	//Please make sure you read the rubric/directions carefully and implement the solution recursively!
 
 
-//GAS ------------------------------------------------------------------------------------------------
+//GAS ---------------------------------------------------------------------------------------------------
+//precondition: There should be a tile, map, player and gas flower. 
+//postcondition: Gas appears when the player touches a gas flower and the gas spreads in a pattern. 
+//post cont.: The gas spreads differently depending on where the player is and the boundaries/restrictions (map/block walls/restrictions).
 	private void addGas(int col, int row, Map map, int numSquaresToFill, ArrayList<Gas> placedThisRound){
 		Gas g = new Gas(col, row, tileSize, tileset.getImage("GasOne"), this, 0);
 		map.addTile(col, row, g);
@@ -209,45 +212,85 @@ public class Level {
 			Gas current = placedThisRound.get(i);
 			int c = current.getCol();
 			int r = current.getRow();
+			//up
 			if(numSquaresToFill>0 && r-1 >=0){
 				if(!(map.getTiles()[c][r - 1] instanceof Gas) && !map.getTiles()[c][r - 1].isSolid()){
-					Gas newGas = new Gas(c, r - 1, tileSize, tileset.getImage("GasOne"), this, 0);
-					map.addTile(c, r - 1, newGas);
-					placedThisRound.add(newGas);
+					Gas newG = new Gas(c, r - 1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c, r - 1, newG);
+					placedThisRound.add(newG);
 					numSquaresToFill--;
 				}
 			}
-			if(numSquaresToFill>0&&c -1>= 0){
-				if(!(map.getTiles()[c - 1][r] instanceof Gas) && !map.getTiles()[c - 1][r].isSolid()){
-					Gas newGas = new Gas(c - 1, r, tileSize, tileset.getImage("GasOne"), this, 0);
-					map.addTile(c - 1, r, newGas);
-					placedThisRound.add(newGas);
+			//up right
+			if(numSquaresToFill>0 && r-1 >=0 && c+1<map.getTiles().length){
+				if(!(map.getTiles()[c+1][r - 1] instanceof Gas) && !map.getTiles()[c][r - 1].isSolid()){
+					Gas newG = new Gas(c, r - 1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c, r - 1, newG);
+					placedThisRound.add(newG);
 					numSquaresToFill--;
 				}
 			}
+			//up left
+			if(numSquaresToFill>0 && r-1 >=0&&c-1 >=0){
+				if(!(map.getTiles()[c-1][r - 1] instanceof Gas) && !map.getTiles()[c][r - 1].isSolid()){
+					Gas newG = new Gas(c, r - 1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c, r - 1, newG);
+					placedThisRound.add(newG);
+					numSquaresToFill--;
+				}
+			}
+			//right
 			if(numSquaresToFill > 0 &&c+1 < map.getTiles().length){
 				if(!(map.getTiles()[c+1][r] instanceof Gas)&&!map.getTiles()[c + 1][r].isSolid()){
-					Gas newGas = new Gas(c + 1, r, tileSize, tileset.getImage("GasOne"), this, 0);
-					map.addTile(c +1,r, newGas);
-					placedThisRound.add(newGas);
+					Gas newG = new Gas(c + 1, r, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c +1,r, newG);
+					placedThisRound.add(newG);
 					numSquaresToFill--;
 				}
 			}
+			//left
+			if(numSquaresToFill>0&&c -1>= 0){
+				if(!(map.getTiles()[c - 1][r] instanceof Gas) && !map.getTiles()[c - 1][r].isSolid()){
+					Gas newG = new Gas(c - 1, r, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c - 1, r, newG);
+					placedThisRound.add(newG);
+					numSquaresToFill--;
+				}
+			}
+			//down
 			if(numSquaresToFill > 0 && r + 1 < map.getTiles()[0].length){
 				if(!(map.getTiles()[c][r + 1] instanceof Gas) && !map.getTiles()[c][r + 1].isSolid()){
-					Gas newGas = new Gas(c, r + 1, tileSize, tileset.getImage("GasOne"), this, 0);
-					map.addTile(c, r + 1, newGas);
-					placedThisRound.add(newGas);
+					Gas newG = new Gas(c, r + 1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c, r + 1, newG);
+					placedThisRound.add(newG);
+					numSquaresToFill--;
+				}
+			}
+			//down right
+			if(numSquaresToFill > 0 && r + 1 < map.getTiles()[0].length&&c+1<map.getTiles().length){
+				if(!(map.getTiles()[c+1][r + 1] instanceof Gas) && !map.getTiles()[c][r + 1].isSolid()){
+					Gas newG = new Gas(c, r + 1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c, r + 1, newG);
+					placedThisRound.add(newG);
+					numSquaresToFill--;
+				}
+			}
+			//down left
+			if(numSquaresToFill > 0 && r + 1 < map.getTiles()[0].length&&c-1>=0){
+				if(!(map.getTiles()[c+1][r + 1] instanceof Gas) && !map.getTiles()[c][r + 1].isSolid()){
+					Gas newG = new Gas(c, r + 1, tileSize, tileset.getImage("GasOne"), this, 0);
+					map.addTile(c, r + 1, newG);
+					placedThisRound.add(newG);
 					numSquaresToFill--;
 				}
 			}
 			i++;
 		}
 	}
-//////////////////
-
 
 //WATER -----------------------------------------------------------------------------------------------
+//precondition: There should be a map, player, and various water types. also a water flower
+//postcondition: water spreads when the player touches a water flower and the water spread with different fullness across an area.
 	private void water(int col, int row, Map map, int fullness) {
 		//make water (You’ll need modify this to make different kinds of water such as half water and quarter water)
 		String[] waterTypes={"Falling_water", "Quarter_water", "Half_water", "Full_water"};
