@@ -225,7 +225,7 @@ public class Level {
 			if(numSquaresToFill>0 && r-1 >=0 && c+1<map.getTiles().length){
 				if(!(map.getTiles()[c+1][r - 1] instanceof Gas) && !map.getTiles()[c][r - 1].isSolid()){
 					Gas newG = new Gas(c, r - 1, tileSize, tileset.getImage("GasOne"), this, 0);
-					map.addTile(c, r - 1, newG);
+					map.addTile(c+1, r - 1, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
 				}
@@ -234,7 +234,7 @@ public class Level {
 			if(numSquaresToFill>0 && r-1 >=0&&c-1 >=0){
 				if(!(map.getTiles()[c-1][r - 1] instanceof Gas) && !map.getTiles()[c][r - 1].isSolid()){
 					Gas newG = new Gas(c, r - 1, tileSize, tileset.getImage("GasOne"), this, 0);
-					map.addTile(c, r - 1, newG);
+					map.addTile(c-1, r - 1, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
 				}
@@ -270,7 +270,7 @@ public class Level {
 			if(numSquaresToFill > 0 && r + 1 < map.getTiles()[0].length&&c+1<map.getTiles().length){
 				if(!(map.getTiles()[c+1][r + 1] instanceof Gas) && !map.getTiles()[c][r + 1].isSolid()){
 					Gas newG = new Gas(c, r + 1, tileSize, tileset.getImage("GasOne"), this, 0);
-					map.addTile(c, r + 1, newG);
+					map.addTile(c+1, r + 1, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
 				}
@@ -279,7 +279,7 @@ public class Level {
 			if(numSquaresToFill > 0 && r + 1 < map.getTiles()[0].length&&c-1>=0){
 				if(!(map.getTiles()[c+1][r + 1] instanceof Gas) && !map.getTiles()[c][r + 1].isSolid()){
 					Gas newG = new Gas(c, r + 1, tileSize, tileset.getImage("GasOne"), this, 0);
-					map.addTile(c, r + 1, newG);
+					map.addTile(c-1, r + 1, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
 				}
