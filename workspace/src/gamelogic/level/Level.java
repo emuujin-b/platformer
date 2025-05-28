@@ -324,27 +324,27 @@ public class Level {
     	}
 		//go down
 		if (row + 1 < t[0].length && !t[col][row + 1].isSolid()) {
-        	water(col, row + 1, map, 0); 
-			map.addTile(col, row+1, w);
+        	Water w2 = new Water (col, row, tileSize, tileset.getImage(waterTypes[fullness]), this, 0);
+			map.addTile(col, row+1, w2);
     		return;
     }
     	//if we can’t go down go left and right.
 		//right
 		if (row + 1 < t[0].length && t[col][row + 1].isSolid()) {
 			if (col + 1 < t.length && !(t[col + 1][row] instanceof Water) && !(t[col + 1][row].isSolid())) {
-            	water(col + 1, row, map, 2);
-				map.addTile(col+1, row, w);
+            	Water w3 = new Water (col+1, row, tileSize, tileset.getImage(waterTypes[fullness]), this, 2);
+				map.addTile(col+1, row, w3);
 				if(col+2<t.length && !(t[col+2][row] instanceof Water) && !t[col+2][row].isSolid()){
-					water(col+2,row,map,1);
-					map.addTile(col+2, row, w);
+					Water w4 = new Water (col+2, row, tileSize, tileset.getImage(waterTypes[fullness]), this, 1);
+					map.addTile(col+2, row, w4);
 				}
         	}
         	if (col - 1 >= 0 && !(t[col - 1][row] instanceof Water) && !t[col - 1][row].isSolid()) {
-            	water(col - 1, row, map, 2);
-				map.addTile(col-1, row, w);
+            	Water w5 = new Water (col-1, row, tileSize, tileset.getImage(waterTypes[fullness]), this, 2);
+				map.addTile(col-1, row, w5);
 				if(col-2>=0 && !(t[col-2][row] instanceof Water)&& !t[col-2][row].isSolid()){
-					water(col-2,row,map,1);
-					map.addTile(col-2,row,w);
+					Water w6 = new Water (col-2, row, tileSize, tileset.getImage(waterTypes[fullness]), this, 1);
+					map.addTile(col-2,row,w6);
 				}
         	}
     	}
