@@ -35,6 +35,7 @@ public class Level {
 
 	private ArrayList<Enemy> enemiesList = new ArrayList<>();
 	private ArrayList<Flower> flowers = new ArrayList<>();
+	private ArrayList<Water> waters = new ArrayList<>();
 
 	private List<PlayerDieListener> dieListeners = new ArrayList<>();
 	private List<PlayerWinListener> winListeners = new ArrayList<>();
@@ -75,7 +76,6 @@ public class Level {
 					tiles[x][y] = new Tile(xPosition, yPosition, tileSize, null, false, this); // Air
 				else if (values[x][y] == 1)
 					tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, tileset.getImage("Solid"), this);
-
 				else if (values[x][y] == 2)
 					tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.HORIZONTAL_DOWNWARDS, this);
 				else if (values[x][y] == 3)
@@ -110,14 +110,18 @@ public class Level {
 					tiles[x][y] = new Gas(xPosition, yPosition, tileSize, tileset.getImage("GasTwo"), this, 2);
 				else if (values[x][y] == 17)
 					tiles[x][y] = new Gas(xPosition, yPosition, tileSize, tileset.getImage("GasThree"), this, 3);
-				else if (values[x][y] == 18)
+				else if (values[x][y] == 18){
 					tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Falling_water"), this, 0);
-				else if (values[x][y] == 19)
+					waters.add((Water)(tiles[x][y]));}
+				else if (values[x][y] == 19){
 					tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Full_water"), this, 3);
-				else if (values[x][y] == 20)
+					waters.add((Water)(tiles[x][y]));}
+				else if (values[x][y] == 20){
 					tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Half_water"), this, 2);
-				else if (values[x][y] == 21)
+					waters.add((Water)(tiles[x][y]));}
+				else if (values[x][y] == 21){
 					tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Quarter_water"), this, 1);
+					waters.add((Water)(tiles[x][y]));}
 			}
 
 		}
@@ -175,6 +179,18 @@ public class Level {
 					i--;
 				}
 			}
+			//write boolean to see if touching every water or something like that
+			for(Water w:waters){
+				if (w.getHitbox().isIntersecting(player.getHitbox())) {
+					if(w.getFullness() == 1)
+						water(w.getCol(), w.getRow(), map, 3);
+					else
+						water(w.getCol(), tileSize, map, 9);
+					waters.remove(w);
+					//i--;
+					//System.out.println("Touching water");
+				}
+			}
 
 			// Update the enemies
 			for (int i = 0; i < enemies.length; i++) {
@@ -191,8 +207,7 @@ public class Level {
 			camera.update(tslf);
 		}
 	}
-	
-	
+
 	//#############################################################################################################
 	//Your code goes here! 
 	//Please make sure you read the rubric/directions carefully and implement the solution recursively!
@@ -296,28 +311,41 @@ public class Level {
 		String[] waterTypes={"Falling_water", "Quarter_water", "Half_water", "Full_water"};
 		Water w = new Water (col, row, tileSize, tileset.getImage(waterTypes[fullness]), this, fullness);
 		map.addTile(col, row, w);
+		//waters.add(w); do this everytime new water is created. 
 		Tile[][] t =map.getTiles();
 		//in bounds
 		if (col < 0 || col >= t.length || row < 0 || row >= t[0].length) {
+			map.addTile(col, row, w);
         	return;
 		}
 		if (t[col][row] instanceof Water || t[col][row].isSolid()) {
+			map.addTile(col, row, w);
 			return;
     	}
 		//go down
 		if (row + 1 < t[0].length && !t[col][row + 1].isSolid()) {
         	water(col, row + 1, map, 0); 
+			map.addTile(col, row+1, w);
     		return;
     }
     	//if we can’t go down go left and right.
 		//right
 		if (row + 1 < t[0].length && t[col][row + 1].isSolid()) {
-        	int nextFullness = fullness-1;
-			if (col + 1 < t.length && !(t[col + 1][row] instanceof Water) && !t[col + 1][row].isSolid()) {
-            	water(col + 1, row, map, nextFullness);
+			if (col + 1 < t.length && !(t[col + 1][row] instanceof Water) && !(t[col + 1][row].isSolid())) {
+            	water(col + 1, row, map, 2);
+				map.addTile(col+1, row, w);
+				if(col+2<t.length && !(t[col+2][row] instanceof Water) && !t[col+2][row].isSolid()){
+					water(col+2,row,map,1);
+					map.addTile(col+2, row, w);
+				}
         	}
         	if (col - 1 >= 0 && !(t[col - 1][row] instanceof Water) && !t[col - 1][row].isSolid()) {
-            	water(col - 1, row, map, nextFullness);
+            	water(col - 1, row, map, 2);
+				map.addTile(col-1, row, w);
+				if(col-2>=0 && !(t[col-2][row] instanceof Water)&& !t[col-2][row].isSolid()){
+					water(col-2,row,map,1);
+					map.addTile(col-2,row,w);
+				}
         	}
     	}
 	}
