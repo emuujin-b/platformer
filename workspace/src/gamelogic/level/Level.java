@@ -329,121 +329,51 @@ public class Level {
 		//in bounds
 		if (col < 0 || col >= t.length || row < 0 || row >= t[0].length) {
 			fullness=0;
-			if(fullness==0){
-				p="Full_water";
-			}
-			if(fullness==1){
-				p="Quarter_Water";
-			}
-			if(fullness==2){
-				p="Half_water";
-			}
-			if(fullness==3){
-				p="Falling_water";
-			}
+			p="Full_water";
 			map.addTile(col, row, w);
-        	return;
+			waters.add(w);
+			//return;
 		}
 		if (t[col][row] instanceof Water || t[col][row].isSolid()) {
 			fullness=0;
-			if(fullness==0){
-				p="Full_water";
-			}
-			if(fullness==1){
-				p="Quarter_Water";
-			}
-			if(fullness==2){
-				p="Half_water";
-			}
-			if(fullness==3){
-				p="Falling_water";
-			}
+			p="Full_water";
 			map.addTile(col, row, w);
-			return;
+			waters.add(w);
+			//return;
     	}
 		//go down
 		if (row + 1 < t[0].length && !t[col][row + 1].isSolid()) {
 			fullness=3;
-			if(fullness==0){
-				p="Full_water";
-			}
-			if(fullness==1){
-				p="Quarter_Water";
-			}
-			if(fullness==2){
-				p="Half_water";
-			}
-			if(fullness==3){
-				p="Falling_water";
-			}
+			p="Falling_water";
 			map.addTile(col, row+1, w);
-    		return;
+			waters.add(w);
+    		//return;
     	}
     	//if we can’t go down go left and right.
 		//right
 		if (row + 1 < t[0].length && t[col][row + 1].isSolid()) {
 			if (col + 1 < t.length && !(t[col + 1][row] instanceof Water) && !(t[col + 1][row].isSolid())) {
 				fullness=2;
-				if(fullness==0){
-					p="Full_water";
-				}
-				if(fullness==1){
-					p="Quarter_Water";
-				}
-				if(fullness==2){
-					p="Half_water";
-				}
-				if(fullness==3){
-					p="Falling_water";
-				}
+				p="Half_water";
 				map.addTile(col+1, row, w);
+				waters.add(w);
 				if(col+2<t.length && !(t[col+2][row] instanceof Water) && !t[col+2][row].isSolid()){
 					fullness=1;
-					if(fullness==0){
-						p="Full_water";
-					}
-					if(fullness==1){
-						p="Quarter_Water";
-					}
-					if(fullness==2){
-						p="Half_water";
-					}
-					if(fullness==3){
-						p="Falling_water";
-					}
+					p="Quarter_water";
 					map.addTile(col+2, row, w);
+					waters.add(w);
 				}
         	}
         	if (col - 1 >= 0 && !(t[col - 1][row] instanceof Water) && !t[col - 1][row].isSolid()) {
 				fullness=2;
-				if(fullness==0){
-					p="Full_water";
-				}
-				if(fullness==1){
-					p="Quarter_Water";
-				}
-				if(fullness==2){
-					p="Half_water";
-				}
-				if(fullness==3){
-					p="Falling_water";
-				}
+				p="Half_water";
 				map.addTile(col-1, row, w);
+				waters.add(w);
 				if(col-2>=0 && !(t[col-2][row] instanceof Water)&& !t[col-2][row].isSolid()){
 					fullness=1;
-					if(fullness==0){
-						p="Full_water";
-					}
-					if(fullness==1){
-						p="Quarter_Water";
-					}
-					if(fullness==2){
-						p="Half_water";
-					}
-					if(fullness==3){
-						p="Falling_water";
-					}
+					p="Quarter_water";
 					map.addTile(col-2,row,w);
+					waters.add(w);
 				}
         	}
     	}
