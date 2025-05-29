@@ -9,11 +9,11 @@ import gameengine.hitbox.RectHitbox;
 import gamelogic.Main;
 import gamelogic.level.Level;
 import gamelogic.tiles.Tile;
-
+import java.awt.*;
 public class Player extends PhysicsObject{
 	public float walkSpeed = 400;
 	public float jumpPower = 1350;
-
+	private long timer;
 	private boolean isJumping = false;
 
 	public Player(float x, float y, Level level) {
@@ -21,6 +21,8 @@ public class Player extends PhysicsObject{
 		super(x, y, level.getLevelData().getTileSize(), level.getLevelData().getTileSize(), level);
 		int offset =(int)(level.getLevelData().getTileSize()*0.1); //hitbox is offset by 10% of the player size.
 		this.hitbox = new RectHitbox(this, offset,offset, width -offset, height - offset);
+
+		timer=System.currentTimeMillis();
 	}
 
 	@Override
@@ -48,6 +50,15 @@ public class Player extends PhysicsObject{
 		g.setColor(Color.YELLOW);
 		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
 		
+		g.setFont(new Font("Comic Sans MS", Font.PLAIN,50));
+		g.drawString((System.currentTimeMillis()-timer)/1000+"", (int)getX(), (int)getY());
+		//how to draw stuff^^ -- countup
+		if(System.currentTimeMillis()-timer>5000){
+			timer=System.currentTimeMillis();
+		}
+
+		//countdown == 5000-((System.currentTimeMillis()-timer)/1000)
+
 		if(Main.DEBUGGING) {
 			for (int i = 0; i < closestMatrix.length; i++) {
 				Tile t = closestMatrix[i];

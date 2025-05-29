@@ -29,6 +29,8 @@ public class Level {
 	public static Player player;
 	private Camera camera;
 
+	private String p;
+
 	private boolean active;
 	private boolean playerDead;
 	private boolean playerWin;
@@ -308,43 +310,140 @@ public class Level {
 //postcondition: water spreads when the player touches a water flower and the water spread with different fullness across an area.
 	private void water(int col, int row, Map map, int fullness) {
 		//make water (You’ll need modify this to make different kinds of water such as half water and quarter water)
-		String[] waterTypes={"Falling_water", "Quarter_water", "Half_water", "Full_water"};
-		Water w = new Water (col, row, tileSize, tileset.getImage(waterTypes[fullness]), this, fullness);
+		if(fullness==0){
+			p="Full_water";
+		}
+		if(fullness==1){
+			p="Quarter_Water";
+		}
+		if(fullness==2){
+			p="Half_water";
+		}
+		if(fullness==3){
+			p="Falling_water";
+		}
+		Water w = new Water (col, row, tileSize, tileset.getImage(p), this, fullness);
 		map.addTile(col, row, w);
 		//waters.add(w); do this everytime new water is created. 
 		Tile[][] t =map.getTiles();
 		//in bounds
 		if (col < 0 || col >= t.length || row < 0 || row >= t[0].length) {
+			fullness=0;
+			if(fullness==0){
+				p="Full_water";
+			}
+			if(fullness==1){
+				p="Quarter_Water";
+			}
+			if(fullness==2){
+				p="Half_water";
+			}
+			if(fullness==3){
+				p="Falling_water";
+			}
 			map.addTile(col, row, w);
         	return;
 		}
 		if (t[col][row] instanceof Water || t[col][row].isSolid()) {
+			fullness=0;
+			if(fullness==0){
+				p="Full_water";
+			}
+			if(fullness==1){
+				p="Quarter_Water";
+			}
+			if(fullness==2){
+				p="Half_water";
+			}
+			if(fullness==3){
+				p="Falling_water";
+			}
 			map.addTile(col, row, w);
 			return;
     	}
 		//go down
 		if (row + 1 < t[0].length && !t[col][row + 1].isSolid()) {
-        	Water w2 = new Water (col, row, tileSize, tileset.getImage(waterTypes[fullness]), this, 0);
-			map.addTile(col, row+1, w2);
+			fullness=3;
+			if(fullness==0){
+				p="Full_water";
+			}
+			if(fullness==1){
+				p="Quarter_Water";
+			}
+			if(fullness==2){
+				p="Half_water";
+			}
+			if(fullness==3){
+				p="Falling_water";
+			}
+			map.addTile(col, row+1, w);
     		return;
-    }
+    	}
     	//if we can’t go down go left and right.
 		//right
 		if (row + 1 < t[0].length && t[col][row + 1].isSolid()) {
 			if (col + 1 < t.length && !(t[col + 1][row] instanceof Water) && !(t[col + 1][row].isSolid())) {
-            	Water w3 = new Water (col+1, row, tileSize, tileset.getImage(waterTypes[fullness]), this, 2);
-				map.addTile(col+1, row, w3);
+				fullness=2;
+				if(fullness==0){
+					p="Full_water";
+				}
+				if(fullness==1){
+					p="Quarter_Water";
+				}
+				if(fullness==2){
+					p="Half_water";
+				}
+				if(fullness==3){
+					p="Falling_water";
+				}
+				map.addTile(col+1, row, w);
 				if(col+2<t.length && !(t[col+2][row] instanceof Water) && !t[col+2][row].isSolid()){
-					Water w4 = new Water (col+2, row, tileSize, tileset.getImage(waterTypes[fullness]), this, 1);
-					map.addTile(col+2, row, w4);
+					fullness=1;
+					if(fullness==0){
+						p="Full_water";
+					}
+					if(fullness==1){
+						p="Quarter_Water";
+					}
+					if(fullness==2){
+						p="Half_water";
+					}
+					if(fullness==3){
+						p="Falling_water";
+					}
+					map.addTile(col+2, row, w);
 				}
         	}
         	if (col - 1 >= 0 && !(t[col - 1][row] instanceof Water) && !t[col - 1][row].isSolid()) {
-            	Water w5 = new Water (col-1, row, tileSize, tileset.getImage(waterTypes[fullness]), this, 2);
-				map.addTile(col-1, row, w5);
+				fullness=2;
+				if(fullness==0){
+					p="Full_water";
+				}
+				if(fullness==1){
+					p="Quarter_Water";
+				}
+				if(fullness==2){
+					p="Half_water";
+				}
+				if(fullness==3){
+					p="Falling_water";
+				}
+				map.addTile(col-1, row, w);
 				if(col-2>=0 && !(t[col-2][row] instanceof Water)&& !t[col-2][row].isSolid()){
-					Water w6 = new Water (col-2, row, tileSize, tileset.getImage(waterTypes[fullness]), this, 1);
-					map.addTile(col-2,row,w6);
+					fullness=1;
+					if(fullness==0){
+						p="Full_water";
+					}
+					if(fullness==1){
+						p="Quarter_Water";
+					}
+					if(fullness==2){
+						p="Half_water";
+					}
+					if(fullness==3){
+						p="Falling_water";
+					}
+					map.addTile(col-2,row,w);
 				}
         	}
     	}
