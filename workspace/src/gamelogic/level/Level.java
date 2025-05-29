@@ -310,18 +310,19 @@ public class Level {
 //postcondition: water spreads when the player touches a water flower and the water spread with different fullness across an area.
 	private void water(int col, int row, Map map, int fullness) {
 		//make water (You’ll need modify this to make different kinds of water such as half water and quarter water)
-		if(fullness==0){
-			p="Full_water";
-		}
-		if(fullness==1){
-			p="Quarter_Water";
-		}
-		if(fullness==2){
-			p="Half_water";
-		}
-		if(fullness==3){
-			p="Falling_water";
-		}
+		// if(fullness==0){
+		// 	p="Full_water";
+		// }
+		// if(fullness==1){
+		// 	p="Quarter_Water";
+		// }
+		// if(fullness==2){
+		// 	p="Half_water";
+		// }
+		// if(fullness==3){
+		// 	p="Falling_water";
+		// }
+		//p = which image to get based on fullness
 		Water w = new Water (col, row, tileSize, tileset.getImage(p), this, fullness);
 		map.addTile(col, row, w);
 		//waters.add(w); do this everytime new water is created. 
