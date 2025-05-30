@@ -53,6 +53,7 @@ public class Player extends PhysicsObject{
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN,50));
 		g.drawString((System.currentTimeMillis()-timer)/1000+"", (int)getX(), (int)getY());
 		//how to draw stuff^^ -- countup
+		
 		if(System.currentTimeMillis()-timer>5000){
 			timer=System.currentTimeMillis();
 		}

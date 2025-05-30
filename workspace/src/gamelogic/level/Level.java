@@ -20,6 +20,7 @@ import gamelogic.tiles.SolidTile;
 import gamelogic.tiles.Spikes;
 import gamelogic.tiles.Tile;
 import gamelogic.tiles.Water;
+import gamelogic.tiles.Slime;
 
 public class Level {
 
@@ -29,7 +30,6 @@ public class Level {
 	public static Player player;
 	private Camera camera;
 
-	private String p;
 
 	private boolean active;
 	private boolean playerDead;
@@ -65,7 +65,7 @@ public class Level {
 	public void restartLevel() {
 		int[][] values = mapdata.getValues();
 		Tile[][] tiles = new Tile[width][height];
-
+//if water does something, need to clear water array afterwards
 		for (int x = 0; x < width; x++) {
 			int xPosition = x;
 			for (int y = 0; y < height; y++) {
@@ -124,6 +124,9 @@ public class Level {
 				else if (values[x][y] == 21){
 					tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Quarter_water"), this, 1);
 					waters.add((Water)(tiles[x][y]));}
+				else if(values[x][y]==22){
+					tiles[x][y]=new Slime(xPosition, y, yPosition, tileset.getImage("Slime"), this);
+				}
 			}
 
 		}
@@ -211,8 +214,16 @@ public class Level {
 	}
 
 	//#############################################################################################################
-	//Your code goes here! 
-	//Please make sure you read the rubric/directions carefully and implement the solution recursively!
+
+
+
+//SLIME--------------------------------------------------------------------------------------------------
+//precondition: there should be a tile, map, player, and slime block. also player needs to be able to jump
+//postcondition: when the player jumps on the slime block, they jump higher. 
+private void slime(float x, float y, int size,Level level){
+	Slime s=new Slime(x, y, size, tileset.getImage("Slime"), this);
+
+}
 
 
 //GAS ---------------------------------------------------------------------------------------------------
@@ -310,19 +321,8 @@ public class Level {
 //postcondition: water spreads when the player touches a water flower and the water spread with different fullness across an area.
 	private void water(int col, int row, Map map, int fullness) {
 		//make water (You’ll need modify this to make different kinds of water such as half water and quarter water)
-		// if(fullness==0){
-		// 	p="Full_water";
-		// }
-		// if(fullness==1){
-		// 	p="Quarter_Water";
-		// }
-		// if(fullness==2){
-		// 	p="Half_water";
-		// }
-		// if(fullness==3){
-		// 	p="Falling_water";
-		// }
 		//p = which image to get based on fullness
+		String p="Full_water";
 		Water w = new Water (col, row, tileSize, tileset.getImage(p), this, fullness);
 		map.addTile(col, row, w);
 		//waters.add(w); do this everytime new water is created. 
