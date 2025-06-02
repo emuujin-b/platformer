@@ -1,8 +1,5 @@
 package gamelogic.player;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 import gameengine.PhysicsObject;
 import gameengine.graphics.MyGraphics;
 import gameengine.hitbox.RectHitbox;
@@ -14,6 +11,7 @@ public class Player extends PhysicsObject{
 	public float walkSpeed = 400;
 	public float jumpPower = 1350;
 	private long timer;
+	public long sec;
 	private boolean isJumping = false;
 
 	public Player(float x, float y, Level level) {
@@ -51,14 +49,12 @@ public class Player extends PhysicsObject{
 		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
 		
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN,50));
-		g.drawString((System.currentTimeMillis()-timer)/1000+"", (int)getX(), (int)getY());
-		//how to draw stuff^^ -- countup
-		
+		//g.drawString((System.currentTimeMillis()-timer)/1000+"", (int)getX(), (int)getY());
+		sec = System.currentTimeMillis()-timer/1000;
 		if(System.currentTimeMillis()-timer>5000){
 			timer=System.currentTimeMillis();
 		}
 
-		//countdown == 5000-((System.currentTimeMillis()-timer)/1000)
 
 		if(Main.DEBUGGING) {
 			for (int i = 0; i < closestMatrix.length; i++) {

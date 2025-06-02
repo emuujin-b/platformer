@@ -3,6 +3,7 @@ package gamelogic.level;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Color;
 
 import gameengine.PhysicsObject;
 import gameengine.graphics.Camera;
@@ -22,7 +23,8 @@ import gamelogic.tiles.Tile;
 import gamelogic.tiles.Water;
 import gamelogic.tiles.Slime;
 
-public class Level {
+
+public class Level{
 
 	private LevelData leveldata;
 	private Map map;
@@ -38,7 +40,8 @@ public class Level {
 	private ArrayList<Enemy> enemiesList = new ArrayList<>();
 	private ArrayList<Flower> flowers = new ArrayList<>();
 	private ArrayList<Water> waters = new ArrayList<>();
-
+	private ArrayList<Slime> slimes = new ArrayList<>();
+	private ArrayList<Gas> gases = new ArrayList<>();
 	private List<PlayerDieListener> dieListeners = new ArrayList<>();
 	private List<PlayerWinListener> winListeners = new ArrayList<>();
 
@@ -187,13 +190,38 @@ public class Level {
 			//write boolean to see if touching every water or something like that
 			for(Water w:waters){
 				if (w.getHitbox().isIntersecting(player.getHitbox())) {
-					if(w.getFullness() == 1)
-						water(w.getCol(), w.getRow(), map, 3);
-					else
-						water(w.getCol(), tileSize, map, 9);
+					if(player.sec>=5){
+						onPlayerDeath();
+					}
+					if(w.getFullness() == 1){
+						water(w.getCol(), w.getRow(), map, 3);}
+					else {
+						water(w.getCol(), tileSize, map, 9);}
 					waters.remove(w);
 					//i--;
 					//System.out.println("Touching water");
+				}
+			}
+
+			for(Gas g:gases){
+				if(g.getHitbox().isIntersecting(player.getHitbox())){
+					if(player.sec>=5){
+						player.setColor(Color.BLUE);
+						player.walkSpeed=300;
+					}
+					//after 10 seconds player goes back to normal
+					if(player.sec>=15){
+						player.setcolor(Color.YELLOW);
+						player.walkSpeed=400;
+					}
+				}
+			}
+
+			//change jump power when player is touching slime
+			for(Slime s:slimes){
+				if(s.getHitbox().isIntersecting(player.getHitbox())){
+					player.jumpPower=1450;
+					slimes.remove(s);
 				}
 			}
 
@@ -215,14 +243,12 @@ public class Level {
 
 	//#############################################################################################################
 
-
-
 //SLIME--------------------------------------------------------------------------------------------------
 //precondition: there should be a tile, map, player, and slime block. also player needs to be able to jump
 //postcondition: when the player jumps on the slime block, they jump higher. 
 private void slime(float x, float y, int size,Level level){
 	Slime s=new Slime(x, y, size, tileset.getImage("Slime"), this);
-
+	slimes.add(s);
 }
 
 
@@ -247,6 +273,7 @@ private void slime(float x, float y, int size,Level level){
 					map.addTile(c, r - 1, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
+					gases.add(g);
 				}
 			}
 			//up right
@@ -256,6 +283,7 @@ private void slime(float x, float y, int size,Level level){
 					map.addTile(c+1, r - 1, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
+					gases.add(g);
 				}
 			}
 			//up left
@@ -265,6 +293,7 @@ private void slime(float x, float y, int size,Level level){
 					map.addTile(c-1, r - 1, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
+					gases.add(g);
 				}
 			}
 			//right
@@ -274,6 +303,7 @@ private void slime(float x, float y, int size,Level level){
 					map.addTile(c +1,r, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
+					gases.add(g);
 				}
 			}
 			//left
@@ -283,6 +313,7 @@ private void slime(float x, float y, int size,Level level){
 					map.addTile(c - 1, r, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
+					gases.add(g);
 				}
 			}
 			//down
@@ -292,6 +323,7 @@ private void slime(float x, float y, int size,Level level){
 					map.addTile(c, r + 1, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
+					gases.add(g);
 				}
 			}
 			//down right
@@ -301,6 +333,7 @@ private void slime(float x, float y, int size,Level level){
 					map.addTile(c+1, r + 1, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
+					gases.add(g);
 				}
 			}
 			//down left
@@ -310,8 +343,11 @@ private void slime(float x, float y, int size,Level level){
 					map.addTile(c-1, r + 1, newG);
 					placedThisRound.add(newG);
 					numSquaresToFill--;
+					gases.add(g);
 				}
 			}
+
+
 			i++;
 		}
 	}
