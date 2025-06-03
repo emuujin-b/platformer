@@ -13,6 +13,10 @@ public class Player extends PhysicsObject{
 	private long timer;
 	public long sec;
 	private boolean isJumping = false;
+	public long waterStartTime = 0;
+	public boolean isInWater = false;
+	public long gasStartTime=0;
+	public boolean isInGas=false;
 
 	public Player(float x, float y, Level level) {
 	
@@ -40,22 +44,27 @@ public class Player extends PhysicsObject{
 		}
 		
 		isJumping = true;
-		if(collisionMatrix[BOT] != null) isJumping = false;
+		if(!isInWater){
+			waterStartTime=0;
+			walkSpeed=350;
+		}
+		isInGas=false;
+		if(!isInGas){
+			gasStartTime=0;
+		}
+		isInGas=false;
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		g.setColor(Color.YELLOW);
 		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
-		
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN,50));
-		//g.drawString((System.currentTimeMillis()-timer)/1000+"", (int)getX(), (int)getY());
-		sec = System.currentTimeMillis()-timer/1000;
-		if(System.currentTimeMillis()-timer>5000){
-			timer=System.currentTimeMillis();
-		}
-
-
+		// g.drawString((System.currentTimeMillis()-timer)/1000+"", (int)getX(), (int)getY());
+		// sec = System.currentTimeMillis()-timer/1000;
+		// if(System.currentTimeMillis()-timer>5000){
+		// 	timer=System.currentTimeMillis();
+		// }
 		if(Main.DEBUGGING) {
 			for (int i = 0; i < closestMatrix.length; i++) {
 				Tile t = closestMatrix[i];

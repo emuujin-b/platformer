@@ -188,35 +188,39 @@ public class Level{
 				}
 			}
 			//write boolean to see if touching every water or something like that
-			for(Water w:waters){
+			for (Water w : waters) {
 				if (w.getHitbox().isIntersecting(player.getHitbox())) {
-					if(player.sec>=5){
+					if (!player.isInWater) {
+						player.waterStartTime = System.currentTimeMillis();
+						player.isInWater=true;
+					}
+					long timeInWater=System.currentTimeMillis()-player.waterStartTime;
+					if (timeInWater>=5000) {
 						onPlayerDeath();
 					}
-					if(w.getFullness() == 1){
-						water(w.getCol(), w.getRow(), map, 3);}
-					else {
-						water(w.getCol(), tileSize, map, 9);}
+					if (w.getFullness()==1) {
+						water(w.getCol(), w.getRow(), map, 3);
+					} else {
+						water(w.getCol(), tileSize, map, 9);
+					}
 					waters.remove(w);
-					//i--;
-					//System.out.println("Touching water");
+					break;
 				}
 			}
-
-			for(Gas g:gases){
-				if(g.getHitbox().isIntersecting(player.getHitbox())){
-					if(player.sec>=5){
+		}
+		for(Gas g:gases){
+			if(g.getHitbox().isIntersecting(player.getHitbox())){
+				long timeInGas=System.currentTimeMillis()-player.gasStartTime;
+					if (timeInGas>=5000 && timeInGas<=15000) {
 						player.setColor(Color.BLUE);
 						player.walkSpeed=300;
 					}
-					//after 10 seconds player goes back to normal
-					if(player.sec>=15){
-						player.setcolor(Color.YELLOW);
-						player.walkSpeed=400;
-					}
-				}
+					if (timeInGas>=15000) {
+						onPlayerDeath();
+					} 
+					break;
 			}
-
+		}
 			//change jump power when player is touching slime
 			for(Slime s:slimes){
 				if(s.getHitbox().isIntersecting(player.getHitbox())){
@@ -224,7 +228,6 @@ public class Level{
 					slimes.remove(s);
 				}
 			}
-
 			// Update the enemies
 			for (int i = 0; i < enemies.length; i++) {
 				enemies[i].update(tslf);
@@ -232,16 +235,25 @@ public class Level{
 					onPlayerDeath();
 				}
 			}
-
 			// Update the map
 			map.update(tslf);
 
 			// Update the camera
 			camera.update(tslf);
-		}
-	}
 
-	//#############################################################################################################
+			//if the player is not touching water, they are not in water (isInWater=false) and the timer is reset and stopped.
+			if (!isPlayerTouchingWater()) {
+    			player.isInWater = false;
+    			player.waterStartTime = 0;
+			}
+			//if the player is not touching gas, they are not in gas (isInGas=false) and the timer is reset and stopped.
+			if (!isPlayerTouchingGas()) {
+    			player.isInGas=false;
+    			player.gasStartTime=0;
+			}
+
+		}
+
 
 //SLIME--------------------------------------------------------------------------------------------------
 //precondition: there should be a tile, map, player, and slime block. also player needs to be able to jump
@@ -395,7 +407,24 @@ private void slime(float x, float y, int size,Level level){
 				water(col - 1, row + 1, map, 0);
 		}
 }
-
+	//checks if the player hitbox is intersecting the water hitbox. (player in/touching water)
+	public boolean isPlayerTouchingWater() {
+    	for (Water w : waters) {
+        	if (w.getHitbox().isIntersecting(player.getHitbox())) {
+            	return true;
+        	}
+    	}
+    	return false;
+	}
+	//checks if the player hitbox is interesting the gas hitbox. (player in/touching gas)
+	public boolean isPlayerTouchingGas() {
+    	for (Gas g : gases) {
+        	if (g.getHitbox().isIntersecting(player.getHitbox())) {
+            	return true;
+        	}
+    	}
+    	return false;
+	}
 
 	public void draw(Graphics g) {
 	   	 g.translate((int) -camera.getX(), (int) -camera.getY());
