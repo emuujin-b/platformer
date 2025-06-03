@@ -406,8 +406,9 @@ private void slime(float x, float y, int size,Level level){
 			else if (!map.getTiles()[col - 1][row + 1].isSolid())
 				water(col - 1, row + 1, map, 0);
 		}
-}
-	//checks if the player hitbox is intersecting the water hitbox. (player in/touching water)
+	}
+	//precondition: there should be a waters array with Water objects, there should be a player with a hitbox and water should have a hitbox.
+	//postcondition:checks if the player hitbox is intersecting the water hitbox. (player in/touching water)
 	public boolean isPlayerTouchingWater() {
     	for (Water w : waters) {
         	if (w.getHitbox().isIntersecting(player.getHitbox())) {
@@ -416,7 +417,9 @@ private void slime(float x, float y, int size,Level level){
     	}
     	return false;
 	}
-	//checks if the player hitbox is interesting the gas hitbox. (player in/touching gas)
+
+	//precondition: there should be a gases array with Gas objects, there should be a player with a hitbox and gas should have a hitbox.
+	//postcondition: checks if the player hitbox is interesting the gas hitbox. (player in/touching gas)
 	public boolean isPlayerTouchingGas() {
     	for (Gas g : gases) {
         	if (g.getHitbox().isIntersecting(player.getHitbox())) {
