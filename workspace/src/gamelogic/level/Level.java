@@ -357,64 +357,45 @@ private void slime(float x, float y, int size,Level level){
 //postcondition: water spreads when the player touches a water flower and the water spread with different fullness across an area.
 	private void water(int col, int row, Map map, int fullness) {
 		//make water (You’ll need modify this to make different kinds of water such as half water and quarter water)
-		//p = which image to get based on fullness
-		String p="Full_water";
-		Water w = new Water (col, row, tileSize, tileset.getImage(p), this, fullness);
-		map.addTile(col, row, w);
-		//waters.add(w); do this everytime new water is created. 
-		Tile[][] t =map.getTiles();
-		//in bounds
-		if (col < 0 || col >= t.length || row < 0 || row >= t[0].length) {
-			fullness=0;
-			p="Full_water";
-			map.addTile(col, row, w);
-			waters.add(w);
-			//return;
+		if (col < 0 || col >= map.getTiles().length || row < 0 || row >= map.getTiles()[0].length)
+			return;
+
+		if (map.getTiles()[col][row].isSolid() || map.getTiles()[col][row] instanceof Water)
+			return;
+		if (fullness == 3) {
+			map.addTile(col, row, new Water(col, row, tileSize, tileset.getImage("Full_water"), this, fullness)); 
+		} else if (fullness == 2) {
+			map.addTile(col, row, new Water(col, row, tileSize, tileset.getImage("Half_water"), this, fullness)); 
+		} else if (fullness == 1) {
+			map.addTile(col, row, new Water(col, row, tileSize, tileset.getImage("Quarter_water"), this, fullness)); 
+		} else {
+			map.addTile(col, row, new Water(col, row, tileSize, tileset.getImage("Falling_water"), this, fullness)); 
 		}
-		if (t[col][row] instanceof Water || t[col][row].isSolid()) {
-			fullness=0;
-			p="Full_water";
-			map.addTile(col, row, w);
-			waters.add(w);
-			//return;
-    	}
-		//go down
-		if (row + 1 < t[0].length && !t[col][row + 1].isSolid()) {
-			fullness=3;
-			p="Falling_water";
-			map.addTile(col, row+1, w);
-			waters.add(w);
-    		//return;
-    	}
-    	//if we can’t go down go left and right.
-		//right
-		if (row + 1 < t[0].length && t[col][row + 1].isSolid()) {
-			if (col + 1 < t.length && !(t[col + 1][row] instanceof Water) && !(t[col + 1][row].isSolid())) {
-				fullness=2;
-				p="Half_water";
-				map.addTile(col+1, row, w);
-				waters.add(w);
-				if(col+2<t.length && !(t[col+2][row] instanceof Water) && !t[col+2][row].isSolid()){
-					fullness=1;
-					p="Quarter_water";
-					map.addTile(col+2, row, w);
-					waters.add(w);
-				}
-        	}
-        	if (col - 1 >= 0 && !(t[col - 1][row] instanceof Water) && !t[col - 1][row].isSolid()) {
-				fullness=2;
-				p="Half_water";
-				map.addTile(col-1, row, w);
-				waters.add(w);
-				if(col-2>=0 && !(t[col-2][row] instanceof Water)&& !t[col-2][row].isSolid()){
-					fullness=1;
-					p="Quarter_water";
-					map.addTile(col-2,row,w);
-					waters.add(w);
-				}
-        	}
-    	}
-	}
+
+		if (row + 1 < map.getTiles()[0].length && !map.getTiles()[col][row + 1].isSolid() && !(map.getTiles()[col][row + 1] instanceof Water)) {
+			water(col, row + 1, map, 0);
+			return;
+		}
+
+		if (col + 1 < map.getTiles().length && !map.getTiles()[col + 1][row].isSolid() && !(map.getTiles()[col + 1][row] instanceof Water)) {
+			if (fullness == 3 && map.getTiles()[col + 1][row + 1].isSolid())
+				water(col + 1, row, map, 2);
+			else if ((fullness == 2 || fullness == 1) && map.getTiles()[col + 1][row + 1].isSolid())
+				water(col + 1, row, map, 1);
+			else if (!map.getTiles()[col + 1][row + 1].isSolid())
+				water(col + 1, row + 1, map, 0);
+		}
+
+		if (col - 1 >= 0 && !map.getTiles()[col - 1][row].isSolid() && !(map.getTiles()[col - 1][row] instanceof Water)) {
+			if (fullness == 3 && map.getTiles()[col - 1][row + 1].isSolid())
+				water(col - 1, row, map, 2);
+			else if ((fullness == 2 || fullness == 1) && map.getTiles()[col - 1][row + 1].isSolid())
+				water(col - 1, row, map, 1);
+			else if (!map.getTiles()[col - 1][row + 1].isSolid())
+				water(col - 1, row + 1, map, 0);
+		}
+}
+
 
 	public void draw(Graphics g) {
 	   	 g.translate((int) -camera.getX(), (int) -camera.getY());
