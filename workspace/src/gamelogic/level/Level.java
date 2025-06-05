@@ -131,7 +131,6 @@ public class Level{
 					tiles[x][y]=new Slime(xPosition, y, yPosition, tileset.getImage("Slime"), this);
 				}
 			}
-
 		}
 		enemies = new Enemy[enemiesList.size()];
 		map = new Map(width, height, tileSize, tiles);
@@ -251,9 +250,7 @@ public class Level{
     			player.isInGas=false;
     			player.gasStartTime=0;
 			}
-
 		}
-
 
 //SLIME--------------------------------------------------------------------------------------------------
 //precondition: there should be a tile, map, player, and slime block. also player needs to be able to jump
@@ -261,8 +258,10 @@ public class Level{
 private void slime(float x, float y, int size,Level level){
 	Slime s=new Slime(x, y, size, tileset.getImage("Slime"), this);
 	slimes.add(s);
+	// if(player.getHitbox().isIntersecting(s.getHitbox())){
+	// 	player.jumpPower=1450;
+	// }
 }
-
 
 //GAS ---------------------------------------------------------------------------------------------------
 //precondition: There should be a tile, map, player and gas flower. 
@@ -358,8 +357,6 @@ private void slime(float x, float y, int size,Level level){
 					gases.add(g);
 				}
 			}
-
-
 			i++;
 		}
 	}
@@ -371,7 +368,6 @@ private void slime(float x, float y, int size,Level level){
 		//make water (You’ll need modify this to make different kinds of water such as half water and quarter water)
 		if (col < 0 || col >= map.getTiles().length || row < 0 || row >= map.getTiles()[0].length)
 			return;
-
 		if (map.getTiles()[col][row].isSolid() || map.getTiles()[col][row] instanceof Water)
 			return;
 		if (fullness == 3) {
@@ -383,12 +379,13 @@ private void slime(float x, float y, int size,Level level){
 		} else {
 			map.addTile(col, row, new Water(col, row, tileSize, tileset.getImage("Falling_water"), this, fullness)); 
 		}
-
 		if (row + 1 < map.getTiles()[0].length && !map.getTiles()[col][row + 1].isSolid() && !(map.getTiles()[col][row + 1] instanceof Water)) {
 			water(col, row + 1, map, 0);
+			if(!(map.getTiles()[col][row+2].isSolid())){
+				water(col, row + 1, map, 3);
+			}
 			return;
 		}
-
 		if (col + 1 < map.getTiles().length && !map.getTiles()[col + 1][row].isSolid() && !(map.getTiles()[col + 1][row] instanceof Water)) {
 			if (fullness == 3 && map.getTiles()[col + 1][row + 1].isSolid())
 				water(col + 1, row, map, 2);
@@ -397,7 +394,6 @@ private void slime(float x, float y, int size,Level level){
 			else if (!map.getTiles()[col + 1][row + 1].isSolid())
 				water(col + 1, row + 1, map, 0);
 		}
-
 		if (col - 1 >= 0 && !map.getTiles()[col - 1][row].isSolid() && !(map.getTiles()[col - 1][row] instanceof Water)) {
 			if (fullness == 3 && map.getTiles()[col - 1][row + 1].isSolid())
 				water(col - 1, row, map, 2);
@@ -407,6 +403,7 @@ private void slime(float x, float y, int size,Level level){
 				water(col - 1, row + 1, map, 0);
 		}
 	}
+	//---------------------------------------------------------------------------------------------------------------------------------------
 	//precondition: there should be a waters array with Water objects, there should be a player with a hitbox and water should have a hitbox.
 	//postcondition:checks if the player hitbox is intersecting the water hitbox. (player in/touching water)
 	public boolean isPlayerTouchingWater() {
@@ -417,7 +414,6 @@ private void slime(float x, float y, int size,Level level){
     	}
     	return false;
 	}
-
 	//precondition: there should be a gases array with Gas objects, there should be a player with a hitbox and gas should have a hitbox.
 	//postcondition: checks if the player hitbox is interesting the gas hitbox. (player in/touching gas)
 	public boolean isPlayerTouchingGas() {
@@ -482,8 +478,6 @@ private void slime(float x, float y, int size,Level level){
 	   		 camera.draw(g);
 	   	 g.translate((int) +camera.getX(), (int) +camera.getY());
 	    }
-
-	
 
 	
 	// --------------------------Die-Listener
