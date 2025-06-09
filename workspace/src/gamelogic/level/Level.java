@@ -210,14 +210,14 @@ public class Level{
 		for(Gas g:gases){
 			if(g.getHitbox().isIntersecting(player.getHitbox())){
 				long timeInGas=System.currentTimeMillis()-player.gasStartTime;
-					if (timeInGas>=5000 && timeInGas<=15000) {
-						player.setColor(Color.BLUE);
-						player.walkSpeed=300;
-					}
-					if (timeInGas>=15000) {
-						onPlayerDeath();
-					} 
-					break;
+				if (timeInGas>=5000 && timeInGas<=15000) {
+					player.setColor(Color.BLUE); 
+					player.walkSpeed=300; 
+				}
+				if (timeInGas>=15000) {
+					onPlayerDeath();
+				}
+				break;
 			}
 		}
 			//change jump power when player is touching slime
@@ -260,7 +260,8 @@ private void slime(float x, float y, int size,Level level){
 	slimes.add(s);
 	// if(player.getHitbox().isIntersecting(s.getHitbox())){
 	// 	player.jumpPower=1450;
-	// }
+	//
+	//}
 }
 
 //GAS ---------------------------------------------------------------------------------------------------
