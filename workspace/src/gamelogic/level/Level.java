@@ -224,7 +224,9 @@ public class Level{
 			for(Slime s:slimes){
 				if(s.getHitbox().isIntersecting(player.getHitbox())){
 					player.jumpPower=1450;
-					slimes.remove(s);
+				}
+				else{
+					player.jumpPower=1350;
 				}
 			}
 			// Update the enemies
@@ -262,6 +264,7 @@ private void slime(float x, float y, int size,Level level){
 	// 	player.jumpPower=1450;
 	//
 	//}
+	//when player jumps on slime block, they can jump a little higher
 }
 
 //GAS ---------------------------------------------------------------------------------------------------

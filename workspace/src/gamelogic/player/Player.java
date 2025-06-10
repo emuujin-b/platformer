@@ -57,14 +57,9 @@ public class Player extends PhysicsObject{
 
 	@Override
 	public void draw(Graphics g) {
-		g.setColor(Color.YELLOW);
+		long timeInGas = System.currentTimeMillis() - gasStartTime;
 		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN,50));
-		// g.drawString((System.currentTimeMillis()-timer)/1000+"", (int)getX(), (int)getY());
-		// sec = System.currentTimeMillis()-timer/1000;
-		// if(System.currentTimeMillis()-timer>5000){
-		// 	timer=System.currentTimeMillis();
-		// }
 		if(Main.DEBUGGING) {
 			for (int i = 0; i < closestMatrix.length; i++) {
 				Tile t = closestMatrix[i];
