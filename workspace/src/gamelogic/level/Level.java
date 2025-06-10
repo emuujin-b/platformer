@@ -211,8 +211,8 @@ public class Level{
 			if(g.getHitbox().isIntersecting(player.getHitbox())){
 				long timeInGas=System.currentTimeMillis()-player.gasStartTime;
 				if (timeInGas>=5000 && timeInGas<=15000) {
-					player.setColor(Color.BLUE); 
-					player.walkSpeed=300; 
+					player.setC(Color.BLUE);
+					player.walkSpeed=300;
 				}
 				if (timeInGas>=15000) {
 					onPlayerDeath();
@@ -260,11 +260,6 @@ public class Level{
 private void slime(float x, float y, int size,Level level){
 	Slime s=new Slime(x, y, size, tileset.getImage("Slime"), this);
 	slimes.add(s);
-	// if(player.getHitbox().isIntersecting(s.getHitbox())){
-	// 	player.jumpPower=1450;
-	//
-	//}
-	//when player jumps on slime block, they can jump a little higher
 }
 
 //GAS ---------------------------------------------------------------------------------------------------

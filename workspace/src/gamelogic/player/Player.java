@@ -10,21 +10,19 @@ import java.awt.*;
 public class Player extends PhysicsObject{
 	public float walkSpeed = 400;
 	public float jumpPower = 1350;
-	private long timer;
 	public long sec;
 	private boolean isJumping = false;
 	public long waterStartTime = 0;
 	public boolean isInWater = false;
 	public long gasStartTime=0;
 	public boolean isInGas=false;
+	public Color color;
 
 	public Player(float x, float y, Level level) {
-	
 		super(x, y, level.getLevelData().getTileSize(), level.getLevelData().getTileSize(), level);
 		int offset =(int)(level.getLevelData().getTileSize()*0.1); //hitbox is offset by 10% of the player size.
 		this.hitbox = new RectHitbox(this, offset,offset, width -offset, height - offset);
-
-		timer=System.currentTimeMillis();
+		color=Color.YELLOW;
 	}
 
 	@Override
@@ -55,10 +53,16 @@ public class Player extends PhysicsObject{
 		isInGas=false;
 	}
 
+	//color setter
+	public void setC(Color color){
+		this.color=color;
+	}
+
 	@Override
 	public void draw(Graphics g) {
-		long timeInGas = System.currentTimeMillis() - gasStartTime;
+		g.setColor(color);
 		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
+		
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN,50));
 		if(Main.DEBUGGING) {
 			for (int i = 0; i < closestMatrix.length; i++) {
