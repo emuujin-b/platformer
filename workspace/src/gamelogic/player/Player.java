@@ -62,7 +62,6 @@ public class Player extends PhysicsObject{
 	public void draw(Graphics g) {
 		g.setColor(color);
 		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
-		
 		g.setFont(new Font("Comic Sans MS", Font.PLAIN,50));
 		if(Main.DEBUGGING) {
 			for (int i = 0; i < closestMatrix.length; i++) {

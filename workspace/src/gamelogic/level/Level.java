@@ -253,7 +253,6 @@ public class Level{
     			player.gasStartTime=0;
 			}
 		}
-
 //SLIME--------------------------------------------------------------------------------------------------
 //precondition: there should be a tile, map, player, and slime block. also player needs to be able to jump
 //postcondition: when the player jumps on the slime block, they jump higher. 
