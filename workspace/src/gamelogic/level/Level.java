@@ -186,7 +186,6 @@ public class Level{
 					i--;
 				}
 			}
-			//write boolean to see if touching every water or something like that
 			for (Water w : waters) {
 				if (w.getHitbox().isIntersecting(player.getHitbox())) {
 					if (!player.isInWater) {
@@ -370,10 +369,10 @@ private void slime(float x, float y, int size,Level level){
 //postcondition: water spreads when the player touches a water flower and the water spread with different fullness across an area.
 	private void water(int col, int row, Map map, int fullness) {
 		//make water (You’ll need modify this to make different kinds of water such as half water and quarter water)
-		if (col < 0 || col > map.getTiles().length || row < 0 || row > map.getTiles()[0].length)
-			return;
-		if (map.getTiles()[col][row].isSolid() || map.getTiles()[col][row] instanceof Water)
-			return;
+		if (col < 0 || col > map.getTiles().length || row < 0 || row > map.getTiles()[0].length-1){
+			return;}
+		if (map.getTiles()[col][row].isSolid() || map.getTiles()[col][row] instanceof Water){
+			return;}
 		if (fullness == 3) {
 			map.addTile(col, row, new Water(col, row, tileSize, tileset.getImage("Full_water"), this, fullness)); 
 		} else if (fullness == 2) {
