@@ -128,7 +128,7 @@ public class Level{
 					tiles[x][y] = new Water(xPosition, yPosition, tileSize, tileset.getImage("Quarter_water"), this, 1);
 					waters.add((Water)(tiles[x][y]));}
 				else if(values[x][y]==22){
-					tiles[x][y]=new Slime(xPosition, y, yPosition, tileset.getImage("Slime"), this);
+					tiles[x][y]=new Slime(xPosition, yPosition, tileSize, tileset.getImage("Slime"), this);
 				}
 			}
 		}
@@ -259,6 +259,12 @@ public class Level{
 private void slime(float x, float y, int size,Level level){
 	Slime s=new Slime(x, y, size, tileset.getImage("Slime"), this);
 	slimes.add(s);
+	if(s.getHitbox().isIntersecting(player.getHitbox())){
+		player.jumpPower=1450;
+	}
+	else{
+		player.jumpPower=1350;
+	}
 }
 
 //GAS ---------------------------------------------------------------------------------------------------
@@ -364,7 +370,7 @@ private void slime(float x, float y, int size,Level level){
 //postcondition: water spreads when the player touches a water flower and the water spread with different fullness across an area.
 	private void water(int col, int row, Map map, int fullness) {
 		//make water (You’ll need modify this to make different kinds of water such as half water and quarter water)
-		if (col < 0 || col >= map.getTiles().length || row < 0 || row >= map.getTiles()[0].length)
+		if (col < 0 || col > map.getTiles().length || row < 0 || row > map.getTiles()[0].length)
 			return;
 		if (map.getTiles()[col][row].isSolid() || map.getTiles()[col][row] instanceof Water)
 			return;
@@ -382,7 +388,7 @@ private void slime(float x, float y, int size,Level level){
 			if(!(map.getTiles()[col][row+2].isSolid())){
 				water(col, row + 1, map, 3);
 			}
-			return;
+			//return;
 		}
 		if (col + 1 < map.getTiles().length && !map.getTiles()[col + 1][row].isSolid() && !(map.getTiles()[col + 1][row] instanceof Water)) {
 			if (fullness == 3 && map.getTiles()[col + 1][row + 1].isSolid())

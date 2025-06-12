@@ -50,6 +50,7 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 			levels[1] = LeveldataLoader.loadLeveldata("/workspaces/platformer/workspace/maps/map1.txt");
 			levels[2] = LeveldataLoader.loadLeveldata("/workspaces/platformer/workspace/maps/map2.txt");
 			levels[3] = LeveldataLoader.loadLeveldata("/workspaces/platformer/workspace/maps/map3.txt");
+			levels[4] = LeveldataLoader.loadLeveldata("/workspaces/platformer/workspace/maps/map4.txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
