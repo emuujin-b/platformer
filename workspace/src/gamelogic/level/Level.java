@@ -369,7 +369,7 @@ private void slime(float x, float y, int size,Level level){
 //postcondition: water spreads when the player touches a water flower and the water spread with different fullness across an area.
 	private void water(int col, int row, Map map, int fullness) {
 		//make water (You’ll need modify this to make different kinds of water such as half water and quarter water)
-		if (col < 0 || col > map.getTiles().length || row < 0 || row > map.getTiles()[0].length-1){
+		if (col < 0 || col > map.getTiles().length || row < 0 || row >= map.getTiles()[0].length){
 			return;}
 		if (map.getTiles()[col][row].isSolid() || map.getTiles()[col][row] instanceof Water){
 			return;}
@@ -384,26 +384,28 @@ private void slime(float x, float y, int size,Level level){
 		}
 		if (row + 1 < map.getTiles()[0].length && !map.getTiles()[col][row + 1].isSolid() && !(map.getTiles()[col][row + 1] instanceof Water)) {
 			water(col, row + 1, map, 0);
-			if(!(map.getTiles()[col][row+2].isSolid())){
-				water(col, row + 1, map, 3);
-			}
-			//return;
-		}
+        	if (row + 2 < map.getTiles()[0].length && !map.getTiles()[col][row + 2].isSolid()) {
+            	water(col, row + 1, map, 3);
+        	}
+        	return;
+    	}
 		if (col + 1 < map.getTiles().length && !map.getTiles()[col + 1][row].isSolid() && !(map.getTiles()[col + 1][row] instanceof Water)) {
-			if (fullness == 3 && map.getTiles()[col + 1][row + 1].isSolid())
-				water(col + 1, row, map, 2);
-			else if ((fullness == 2 || fullness == 1) && map.getTiles()[col + 1][row + 1].isSolid())
-				water(col + 1, row, map, 1);
-			else if (!map.getTiles()[col + 1][row + 1].isSolid())
-				water(col + 1, row + 1, map, 0);
+			if (row + 1 < map.getTiles()[0].length){
+				if (fullness == 3 && map.getTiles()[col + 1][row + 1].isSolid())
+					water(col + 1, row, map, 2);
+				else if ((fullness == 2 || fullness == 1) && map.getTiles()[col + 1][row + 1].isSolid())
+					water(col + 1, row, map, 1);
+				else if (!map.getTiles()[col + 1][row + 1].isSolid())
+					water(col + 1, row + 1, map, 0);}
 		}
 		if (col - 1 >= 0 && !map.getTiles()[col - 1][row].isSolid() && !(map.getTiles()[col - 1][row] instanceof Water)) {
-			if (fullness == 3 && map.getTiles()[col - 1][row + 1].isSolid())
-				water(col - 1, row, map, 2);
-			else if ((fullness == 2 || fullness == 1) && map.getTiles()[col - 1][row + 1].isSolid())
-				water(col - 1, row, map, 1);
-			else if (!map.getTiles()[col - 1][row + 1].isSolid())
-				water(col - 1, row + 1, map, 0);
+			if (row + 1 < map.getTiles()[0].length){
+				if (fullness == 3 && map.getTiles()[col - 1][row + 1].isSolid())
+					water(col - 1, row, map, 2);
+				else if ((fullness == 2 || fullness == 1) && map.getTiles()[col - 1][row + 1].isSolid())
+					water(col - 1, row, map, 1);
+				else if (!map.getTiles()[col - 1][row + 1].isSolid())
+					water(col - 1, row + 1, map, 0);}
 		}
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------------
