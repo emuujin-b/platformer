@@ -23,6 +23,7 @@ public class Player extends PhysicsObject{
 		int offset =(int)(level.getLevelData().getTileSize()*0.1); //hitbox is offset by 10% of the player size.
 		this.hitbox = new RectHitbox(this, offset,offset, width -offset, height - offset);
 		color=Color.YELLOW;
+		this.isJumping=false;
 	}
 
 	@Override
@@ -41,16 +42,16 @@ public class Player extends PhysicsObject{
 			isJumping = true;
 		}
 		
-		isJumping = true;
+		//isJumping = true;
 		if(!isInWater){
 			waterStartTime=0;
 			walkSpeed=350;
 		}
-		isInGas=false;
+		//isInGas=false;
 		if(!isInGas){
 			gasStartTime=0;
 		}
-		isInGas=false;
+		//isInGas=false;
 	}
 
 	//color setter
